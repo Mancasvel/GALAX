@@ -1,7 +1,7 @@
-import { Player } from '@/models/Player'
+import { PlayerData } from '@/models/Player'
 
 export interface GameState {
-  player: Player
+  player: PlayerData
   currentPath: string | null
   selectedMentor: string | null
   activeMissions: string[]
@@ -29,6 +29,111 @@ export class GameLogic {
     'Technology & Innovation'
   ]
 
+  private static readonly MISSIONS: Record<string, Array<{
+    id: string
+    title: string
+    description: string
+    difficulty: 'easy' | 'medium' | 'hard'
+    points: number
+  }>> = {
+    'Science & Research': [
+      {
+        id: 'science-mission-1',
+        title: 'Microgravity Plant Growth',
+        description: 'Learn about how plants grow differently in space',
+        difficulty: 'easy',
+        points: 50
+      },
+      {
+        id: 'science-mission-2',
+        title: 'Protein Crystal Formation',
+        description: 'Study how crystals form in microgravity for medical research',
+        difficulty: 'medium',
+        points: 75
+      },
+      {
+        id: 'science-mission-3',
+        title: 'Fluid Physics Experiments',
+        description: 'Investigate how liquids behave without gravity',
+        difficulty: 'hard',
+        points: 100
+      }
+    ],
+    'Engineering & Systems': [
+      {
+        id: 'engineering-mission-1',
+        title: 'Spacecraft Thermal Control',
+        description: 'Learn how to manage temperature extremes in space',
+        difficulty: 'medium',
+        points: 60
+      },
+      {
+        id: 'engineering-mission-2',
+        title: 'Life Support Systems',
+        description: 'Design systems to keep astronauts alive in space',
+        difficulty: 'hard',
+        points: 90
+      }
+    ],
+    'Medicine & Human Factors': [
+      {
+        id: 'medicine-mission-1',
+        title: 'Bone Density Studies',
+        description: 'Understand how microgravity affects human bones',
+        difficulty: 'easy',
+        points: 55
+      },
+      {
+        id: 'medicine-mission-2',
+        title: 'Cardiovascular Adaptation',
+        description: 'Study how the heart adapts to space conditions',
+        difficulty: 'medium',
+        points: 70
+      },
+      {
+        id: 'medicine-mission-3',
+        title: 'Psychological Well-being',
+        description: 'Learn about mental health in isolation',
+        difficulty: 'hard',
+        points: 85
+      }
+    ],
+    'Communications & Exploration': [
+      {
+        id: 'communications-mission-1',
+        title: 'Deep Space Communication',
+        description: 'Master communication across vast distances',
+        difficulty: 'easy',
+        points: 45
+      },
+      {
+        id: 'communications-mission-2',
+        title: 'Mission Control Coordination',
+        description: 'Coordinate with ground control during critical operations',
+        difficulty: 'medium',
+        points: 65
+      }
+    ],
+    'Astronomy & Navigation': [
+      {
+        id: 'astronomy-mission-1',
+        title: 'Celestial Navigation',
+        description: 'Learn to navigate using stars and celestial bodies',
+        difficulty: 'medium',
+        points: 65
+      }
+    ],
+    'Technology & Innovation': [
+      {
+        id: 'technology-mission-1',
+        title: 'Space Robotics',
+        description: 'Develop robots for space exploration and maintenance',
+        difficulty: 'hard',
+        points: 95
+      }
+    ]
+  }
+
   private static readonly MISSIONS_PER_PATH = 3
   private static readonly POINTS_PER_MISSION = {
     easy: 40,
@@ -37,6 +142,8 @@ export class GameLogic {
   }
 
   private static readonly ASTRONAUT_MODE_THRESHOLD = 800 // Total points needed
+  private static readonly EXPERT_THRESHOLD = 500
+  private static readonly INTERMEDIATE_THRESHOLD = 250
 
   static calculateProgressPercentage(progress: Record<string, number>): number {
     const totalMissions = this.PATHS.length * this.MISSIONS_PER_PATH
@@ -44,15 +151,23 @@ export class GameLogic {
     return Math.round((completedMissions / totalMissions) * 100)
   }
 
-  static getNextMissionForPath(path: string, currentProgress: number): string | null {
+  static getNextMissionForPath(path: string, currentProgress: number): { id: string; title: string; description: string; difficulty: "easy" | "medium" | "hard"; points: number; } | null {
     if (currentProgress >= this.MISSIONS_PER_PATH) {
       return null // Path completed
     }
-    return `${path} Mission ${currentProgress + 1}`
+
+    const pathMissions = this.MISSIONS[path] || []
+    const mission = pathMissions[currentProgress]
+
+    if (!mission) {
+      return null
+    }
+
+    return mission
   }
 
   static completeMission(
-    player: Player,
+    player: PlayerData,
     missionId: string,
     missionDifficulty: 'easy' | 'medium' | 'hard' = 'easy'
   ): MissionResult {
@@ -70,7 +185,7 @@ export class GameLogic {
     }
 
     // Check if path is completed
-    const pathCompleted = currentPath && newProgress[currentPath] >= this.MISSIONS_PER_PATH
+    const pathCompleted = currentPath && currentPath !== 'Central Hub' && newProgress[currentPath as keyof typeof newProgress] >= this.MISSIONS_PER_PATH
     const completedPaths = pathCompleted
       ? [...player.completedMissions, missionId]
       : player.completedMissions
@@ -100,7 +215,7 @@ export class GameLogic {
     }
   }
 
-  static validatePathSelection(player: Player, selectedPath: string): boolean {
+  static validatePathSelection(player: PlayerData, selectedPath: string): boolean {
     if (selectedPath === 'Central Hub') return true
 
     // Check if path is unlocked
@@ -109,10 +224,10 @@ export class GameLogic {
 
     // Check if previous path is completed
     const previousPath = this.PATHS[pathIndex - 1]
-    return player.progress[previousPath] >= this.MISSIONS_PER_PATH
+    return player.progress[previousPath as keyof typeof player.progress] >= this.MISSIONS_PER_PATH
   }
 
-  static getUnlockedPaths(player: Player): string[] {
+  static getUnlockedPaths(player: PlayerData): string[] {
     const unlockedPaths = ['Central Hub']
 
     // Always unlock first path
@@ -123,7 +238,7 @@ export class GameLogic {
     // Unlock subsequent paths based on progress
     for (let i = 1; i < this.PATHS.length; i++) {
       const previousPath = this.PATHS[i - 1]
-      if (player.progress[previousPath] >= this.MISSIONS_PER_PATH) {
+      if (player.progress[previousPath as keyof typeof player.progress] >= this.MISSIONS_PER_PATH) {
         unlockedPaths.push(this.PATHS[i])
       }
     }
@@ -182,127 +297,46 @@ export class GameLogic {
   } | null {
     if (progress >= this.MISSIONS_PER_PATH) return null
 
-    const missions: Record<string, Array<{
-      title: string
-      description: string
-      difficulty: 'easy' | 'medium' | 'hard'
-      points: number
-    }>> = {
-      'Science & Research': [
-        {
-          title: 'Microgravity Plant Growth',
-          description: 'Learn about how plants grow differently in space',
-          difficulty: 'easy',
-          points: 50
-        },
-        {
-          title: 'Protein Crystal Formation',
-          description: 'Study how crystals form in microgravity for medical research',
-          difficulty: 'medium',
-          points: 75
-        },
-        {
-          title: 'Fluid Physics Experiments',
-          description: 'Investigate how liquids behave without gravity',
-          difficulty: 'hard',
-          points: 100
-        }
-      ],
-      'Engineering & Systems': [
-        {
-          title: 'Spacecraft Thermal Control',
-          description: 'Learn how to manage temperature extremes in space',
-          difficulty: 'medium',
-          points: 60
-        },
-        {
-          title: 'Life Support Systems',
-          description: 'Design systems to keep astronauts alive in space',
-          difficulty: 'hard',
-          points: 90
-        }
-      ],
-      'Medicine & Human Factors': [
-        {
-          title: 'Bone Density Studies',
-          description: 'Understand how microgravity affects human bones',
-          difficulty: 'medium',
-          points: 70
-        },
-        {
-          title: 'Space Psychology',
-          description: 'Study mental health in isolated environments',
-          difficulty: 'medium',
-          points: 80
-        }
-      ],
-      'Communications & Exploration': [
-        {
-          title: 'Deep Space Communication',
-          description: 'Master communication across vast distances',
-          difficulty: 'easy',
-          points: 45
-        }
-      ],
-      'Astronomy & Navigation': [
-        {
-          title: 'Celestial Navigation',
-          description: 'Learn to navigate using stars and celestial bodies',
-          difficulty: 'medium',
-          points: 65
-        }
-      ],
-      'Technology & Innovation': [
-        {
-          title: 'Space Robotics',
-          description: 'Develop robots for space exploration and maintenance',
-          difficulty: 'hard',
-          points: 95
-        }
-      ]
-    }
-
-    const pathMissions = missions[path] || []
+    const pathMissions = this.MISSIONS[path] || []
     return pathMissions[progress] || null
   }
 
-  static getGameStatus(player: Player): {
+  static getGameStatus(player: PlayerData): {
     progressPercentage: number
     completedPaths: number
     totalPaths: number
     currentLevel: string
     nextMilestone: string
   } {
-    const progressPercentage = this.calculateProgressPercentage(player.progress)
-    const completedPaths = Object.values(player.progress).filter(p => p >= this.MISSIONS_PER_PATH).length
     const totalPaths = this.PATHS.length
-
-    let currentLevel = 'Trainee'
-    let nextMilestone = ''
-
-    if (progressPercentage >= 100) {
-      currentLevel = 'Astronaut'
-      nextMilestone = 'Mission accomplished!'
-    } else if (progressPercentage >= 75) {
-      currentLevel = 'Senior Cadet'
-      nextMilestone = 'Complete final missions to become an Astronaut'
-    } else if (progressPercentage >= 50) {
-      currentLevel = 'Cadet'
-      nextMilestone = 'Complete 2 more paths to become Senior Cadet'
-    } else if (progressPercentage >= 25) {
-      currentLevel = 'Junior Cadet'
-      nextMilestone = 'Complete 3 more paths to become Cadet'
-    } else {
-      nextMilestone = 'Complete your first path to become Junior Cadet'
-    }
+    const completedPaths = Object.values(player.progress).filter(count => count >= this.MISSIONS_PER_PATH).length
 
     return {
-      progressPercentage,
+      progressPercentage: this.getProgressPercentage(player.progress),
       completedPaths,
       totalPaths,
-      currentLevel,
-      nextMilestone
+      currentLevel: this.getCurrentLevel(player.points),
+      nextMilestone: this.getNextMilestone(player.points)
     }
   }
-}
 
+  private static getCurrentLevel(points: number): string {
+    if (points >= this.ASTRONAUT_MODE_THRESHOLD) return 'Astronaut'
+    if (points >= this.EXPERT_THRESHOLD) return 'Expert'
+    if (points >= this.INTERMEDIATE_THRESHOLD) return 'Intermediate'
+    return 'Beginner'
+  }
+
+  private static getNextMilestone(points: number): string {
+    if (points >= this.ASTRONAUT_MODE_THRESHOLD) return 'Maximum level reached!'
+    if (points >= this.EXPERT_THRESHOLD) return `Astronaut Mode (${this.ASTRONAUT_MODE_THRESHOLD - points} points needed)`
+    if (points >= this.INTERMEDIATE_THRESHOLD) return `Expert Level (${this.EXPERT_THRESHOLD - points} points needed)`
+    return `Intermediate Level (${this.INTERMEDIATE_THRESHOLD - points} points needed)`
+  }
+
+  private static getProgressPercentage(progress: Record<string, number>): number {
+    const totalMissions = this.PATHS.length * this.MISSIONS_PER_PATH
+    const completedMissions = Object.values(progress).reduce((sum, count) => sum + count, 0)
+    return Math.round((completedMissions / totalMissions) * 100)
+  }
+}

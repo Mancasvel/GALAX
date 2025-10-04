@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Player } from '@/models/Player'
+import { PlayerData } from '@/models/Player'
 
 interface ProgressPanelProps {
-  player: Player
+  player: PlayerData
   onMentorClick: (mentorName: string) => void
   onMissionStart: (missionType: string) => void
 }

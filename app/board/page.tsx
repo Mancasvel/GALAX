@@ -6,7 +6,8 @@ import { SpaceBoard } from '@/components/SpaceBoard'
 import { ProgressPanel } from '@/components/ProgressPanel'
 import { MentorModal } from '@/components/MentorModal'
 import { MissionModal } from '@/components/MissionModal'
-import { Player } from '@/models/Player'
+import { NBLSimulation } from '@/components/NBLSimulation'
+import { PlayerData } from '@/models/Player'
 
 // Path to Mentor mapping
 const PATH_TO_MENTOR: { [key: string]: string } = {
@@ -19,11 +20,12 @@ const PATH_TO_MENTOR: { [key: string]: string } = {
 }
 
 export default function BoardPage() {
-  const [player, setPlayer] = useState<Player | null>(null)
+  const [player, setPlayer] = useState<PlayerData | null>(null)
   const [selectedPath, setSelectedPath] = useState<string | null>(null)
   const [selectedMentor, setSelectedMentor] = useState<string | null>(null)
   const [showMentorModal, setShowMentorModal] = useState(false)
   const [showMissionModal, setShowMissionModal] = useState(false)
+  const [showNBLSimulation, setShowNBLSimulation] = useState(false)
   const [currentMission, setCurrentMission] = useState<string | null>(null)
   
   // Store conversation context for each path/mentor
@@ -35,7 +37,7 @@ export default function BoardPage() {
   useEffect(() => {
     // For demo purposes, create a default player
     // In production, this would load from database
-    const defaultPlayer: Player = {
+    const defaultPlayer: PlayerData = {
       playerId: 'demo-player',
       name: 'Astronaut Trainee',
       currentPath: 'Central Hub',
@@ -51,7 +53,7 @@ export default function BoardPage() {
       points: 0,
       astronautMode: false,
       completedMissions: [],
-      currentMission: null,
+      currentMission: undefined,
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -109,7 +111,30 @@ export default function BoardPage() {
 
   const handleMissionStart = (missionType: string) => {
     setCurrentMission(missionType)
-    setShowMissionModal(true)
+    
+    // Show NBL simulation for simulation training
+    if (missionType === 'simulation') {
+      setShowNBLSimulation(true)
+    } else {
+      setShowMissionModal(true)
+    }
+  }
+  
+  const handleNBLComplete = (score: number) => {
+    console.log('NBL Training completed with score:', score)
+    
+    // Update player points
+    if (player) {
+      setPlayer({
+        ...player,
+        points: player.points + score
+      })
+    }
+    
+    setShowNBLSimulation(false)
+    
+    // Show success message or update progress
+    alert(`Training Complete! You earned ${score} points!`)
   }
 
   if (!player) {
@@ -203,6 +228,14 @@ export default function BoardPage() {
           onClose={() => setShowMissionModal(false)}
           missionType={currentMission}
           mentorName={selectedMentor}
+        />
+
+        <NBLSimulation
+          isOpen={showNBLSimulation}
+          onClose={() => setShowNBLSimulation(false)}
+          onComplete={handleNBLComplete}
+          difficulty="beginner"
+          specialty={selectedPath || undefined}
         />
       </div>
     </main>

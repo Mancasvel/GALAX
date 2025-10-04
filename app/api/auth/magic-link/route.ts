@@ -32,15 +32,22 @@ export async function POST(request: NextRequest) {
       
       if (!user) {
         // Create new user
+        const now = new Date()
         const newUser: User = {
           email: email.toLowerCase(),
           name: email.split('@')[0], // Temporary name based on email
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: now,
+          updatedAt: now,
           isActive: true,
           isPremium: false,
           totalConversations: 0,
-          emotionalJourney: []
+          emotionalJourney: [],
+          subscriptionPlan: 'whisper',
+          subscriptionStartDate: now,
+          subscriptionEndDate: new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
+          isSubscriptionActive: false,
+          aiChatsUsed: 0,
+          aiChatsLimit: 3
         }
         
         const insertResult = await usersCollection.insertOne(newUser)

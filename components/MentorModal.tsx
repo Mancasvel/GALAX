@@ -83,17 +83,17 @@ export function MentorModal({
           nasaReference: "Deep Space Network"
         })
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error calling mentor AI:', error)
       console.error('Error details:', {
-        message: error.message,
-        stack: error.stack,
+        message: error?.message,
+        stack: error?.stack,
         mentorName,
         messageToSend
       })
 
       setMentorResponse({
-        content: `Error connecting to ${mentorName}: ${error.message}. Please check the console for more details.`,
+        content: `Error connecting to ${mentorName}: ${error?.message || 'Unknown error'}. Please check the console for more details.`,
         educationalFacts: ["Technical issues can occur in complex systems"],
         nextSteps: ["Check browser console for error details", "Try refreshing the page", "Contact support if issue persists"],
         encouragement: "Even NASA engineers encounter technical challenges!",

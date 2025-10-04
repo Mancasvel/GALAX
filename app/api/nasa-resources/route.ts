@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
     if (keywords) {
       const searchTerms = keywords.toLowerCase().split(' ')
       resources = resources.filter(resource =>
-        searchTerms.some(term =>
+        searchTerms.some((term: string) =>
           resource.title.toLowerCase().includes(term) ||
           resource.description.toLowerCase().includes(term) ||
           resource.category.toLowerCase().includes(term)

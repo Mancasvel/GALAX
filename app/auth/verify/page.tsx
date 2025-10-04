@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/AuthContext'
 
-export default function VerifyPage() {
+function VerifyPageContent() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
   const router = useRouter()
@@ -150,5 +150,18 @@ export default function VerifyPage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/20 to-black relative overflow-hidden flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+        <span className="ml-3 text-gray-300">Loading...</span>
+      </div>
+    }>
+      <VerifyPageContent />
+    </Suspense>
   )
 } 

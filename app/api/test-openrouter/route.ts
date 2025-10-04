@@ -49,11 +49,11 @@ export async function GET() {
         solution: 'Check your API key and try again'
       }, { status: response.status })
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Test OpenRouter API error:', error)
     return NextResponse.json({
       error: 'Test failed',
-      message: error.message,
+      message: error?.message || 'Unknown error',
       solution: 'Check your internet connection and API key'
     }, { status: 500 })
   }

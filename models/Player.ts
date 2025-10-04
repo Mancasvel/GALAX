@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
-export interface IPlayer extends Document {
+// Plain interface for player data (without Mongoose Document methods)
+export interface PlayerData {
   playerId: string
   name: string
   currentPath: 'Science & Research' | 'Engineering & Systems' | 'Medicine & Human Factors' | 'Communications & Exploration' | 'Astronomy & Navigation' | 'Technology & Innovation' | 'Central Hub'
@@ -20,6 +21,9 @@ export interface IPlayer extends Document {
   createdAt: Date
   updatedAt: Date
 }
+
+// Mongoose Document interface
+export interface IPlayer extends PlayerData, Document {}
 
 const PlayerSchema = new Schema<IPlayer>({
   playerId: {

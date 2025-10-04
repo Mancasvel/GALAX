@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
           latestPurchaseDate: now.toISOString(),
           originalPurchaseDate: now.toISOString(),
           expirationDate: trialEnd.toISOString(),
-          store: 'web',
+          store: 'stripe',
           productIdentifier: 'whisper_trial',
           isSandbox: process.env.NODE_ENV !== 'production'
         }

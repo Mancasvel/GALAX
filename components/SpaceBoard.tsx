@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { IPlayer } from '@/models/Player'
+import { PlayerData } from '@/models/Player'
 
 interface SpaceBoardProps {
-  player: IPlayer
+  player: PlayerData
   onPathSelect: (pathName: string) => void
   onMentorClick: (mentorName: string) => void
 }
