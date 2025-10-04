@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Player } from '@/models/Player'
+import { IPlayer } from '@/models/Player'
 
 interface SpaceBoardProps {
-  player: Player
+  player: IPlayer
   onPathSelect: (pathName: string) => void
   onMentorClick: (mentorName: string) => void
 }
@@ -122,6 +122,12 @@ export function SpaceBoard({ player, onPathSelect, onMentorClick }: SpaceBoardPr
               <stop offset="100%" stopColor={path.color} stopOpacity="0.6" />
             </radialGradient>
           ))}
+          {/* Gradiente para el círculo central */}
+          <radialGradient id="centralGradient">
+            <stop offset="0%" stopColor="#34d399" />
+            <stop offset="50%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#0d9488" />
+          </radialGradient>
         </defs>
         
         {paths.map((path, index) => {
@@ -277,13 +283,14 @@ export function SpaceBoard({ player, onPathSelect, onMentorClick }: SpaceBoardPr
                 height={60}
                 style={{ overflow: 'visible' }}
               >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.5 + 0.1 * index }}
+                <div
                   className="flex flex-col items-center cursor-pointer"
                   onClick={() => onPathSelect(path.name)}
-                  xmlns="http://www.w3.org/1999/xhtml"
+                  style={{
+                    opacity: 1,
+                    transform: 'scale(1)',
+                    transition: 'all 0.8s ease-in-out'
+                  }}
                 >
                   {/* Etiqueta del camino */}
                   <div 
@@ -309,11 +316,108 @@ export function SpaceBoard({ player, onPathSelect, onMentorClick }: SpaceBoardPr
                   >
                     {path.mentor}
                   </div>
-                </motion.div>
+                </div>
               </foreignObject>
             </g>
           )
         })}
+
+        {/* Central Hub - Punto de inicio (renderizado al final para estar encima) */}
+        <g style={{ zIndex: 100 }}>
+          {/* Anillo exterior pulsante */}
+          <motion.circle
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ 
+              scale: [1, 1.3, 1],
+              opacity: [0.6, 0.9, 0.6]
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            cx={centerX}
+            cy={centerY}
+            r={35}
+            fill="none"
+            stroke="rgba(34, 197, 94, 0.6)"
+            strokeWidth={3}
+            style={{
+              filter: 'drop-shadow(0 0 25px rgba(34, 197, 94, 0.7))'
+            }}
+          />
+
+          {/* Círculo principal verde */}
+          <motion.circle
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 1.2, delay: 0.2, type: "spring" }}
+            cx={centerX}
+            cy={centerY}
+            r={28}
+            fill="url(#centralGradient)"
+            stroke="rgba(255, 255, 255, 0.3)"
+            strokeWidth={2}
+            style={{
+              filter: 'drop-shadow(0 0 35px rgba(34, 197, 94, 0.8))'
+            }}
+          />
+
+          {/* Círculo interior brillante */}
+          <circle
+            cx={centerX}
+            cy={centerY}
+            r={20}
+            fill="url(#innerGlow)"
+            opacity={0.4}
+          />
+
+          {/* Texto del cohete en el centro */}
+          <text
+            x={centerX}
+            y={centerY + 6}
+            textAnchor="middle"
+            fontSize="24"
+            style={{
+              filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))'
+            }}
+          >
+            🚀
+          </text>
+
+          {/* Partículas orbitales */}
+          {[0, 120, 240].map((angle, i) => {
+            const particleAngle = (angle * Math.PI) / 180
+            const orbitRadius = 35
+            return (
+              <motion.circle
+                key={i}
+                cx={centerX}
+                cy={centerY}
+                r={2}
+                fill="#10b981"
+                style={{
+                  filter: 'drop-shadow(0 0 6px rgba(16, 185, 129, 0.9))'
+                }}
+                animate={{
+                  cx: [
+                    centerX + orbitRadius * Math.cos(particleAngle),
+                    centerX + orbitRadius * Math.cos(particleAngle + Math.PI * 2)
+                  ],
+                  cy: [
+                    centerY + orbitRadius * Math.sin(particleAngle),
+                    centerY + orbitRadius * Math.sin(particleAngle + Math.PI * 2)
+                  ]
+                }}
+                transition={{
+                  duration: 3 + i,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+            )
+          })}
+        </g>
       </svg>
 
       {/* Interactive hover effects */}
