@@ -9,15 +9,29 @@ interface MentorModalProps {
   onClose: () => void
   mentorName: string | null
   currentPath?: string | null
+  conversationHistory?: Array<{role: string, content: string}>
+  onUpdateContext?: (pathName: string, messages: Array<{role: string, content: string}>) => void
 }
 
-export function MentorModal({ isOpen, onClose, mentorName, currentPath }: MentorModalProps) {
+export function MentorModal({ 
+  isOpen, 
+  onClose, 
+  mentorName, 
+  currentPath,
+  conversationHistory: externalHistory = [],
+  onUpdateContext
+}: MentorModalProps) {
   const [mentorResponse, setMentorResponse] = useState<MentorResponse | null>(null)
   const [userMessage, setUserMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [conversationHistory, setConversationHistory] = useState<Array<{role: string, content: string}>>([])
+  const [conversationHistory, setConversationHistory] = useState<Array<{role: string, content: string}>>(externalHistory)
 
   const mentor = mentorName ? MENTOR_PROFILES[mentorName] : null
+  
+  // Sync external history when it changes
+  useEffect(() => {
+    setConversationHistory(externalHistory)
+  }, [externalHistory])
 
   const handleSendMessage = useCallback(async (message?: string) => {
     const messageToSend = message || userMessage
@@ -48,11 +62,17 @@ export function MentorModal({ isOpen, onClose, mentorName, currentPath }: Mentor
 
       if (response) {
         setMentorResponse(response)
-        setConversationHistory(prev => [
-          ...prev,
+        const updatedHistory = [
+          ...conversationHistory,
           { role: 'user', content: messageToSend },
           { role: 'assistant', content: response.content }
-        ])
+        ]
+        setConversationHistory(updatedHistory)
+        
+        // Update parent context if callback provided
+        if (onUpdateContext && currentPath) {
+          onUpdateContext(currentPath, updatedHistory)
+        }
       } else {
         console.error('No response received from mentor AI')
         setMentorResponse({
@@ -86,17 +106,18 @@ export function MentorModal({ isOpen, onClose, mentorName, currentPath }: Mentor
   }, [mentorName, currentPath, conversationHistory, userMessage])
 
   useEffect(() => {
-    if (isOpen && mentor && conversationHistory.length === 0 && mentorName) {
-      console.log('Initializing mentor conversation for:', mentorName)
+    if (isOpen && mentor && conversationHistory.length === 0 && mentorName && currentPath) {
+      console.log('Initializing mentor conversation for:', mentorName, 'Path:', currentPath)
       console.log('Current state:', {
         isOpen,
         mentor: !!mentor,
         conversationHistoryLength: conversationHistory.length,
-        mentorName
+        mentorName,
+        currentPath
       })
 
-      // Send initial greeting when modal opens
-      const greeting = `Hello ${mentor.name}, I'm ready to learn about ${currentPath || 'space exploration'}!`
+      // Send initial greeting when modal opens for the first time
+      const greeting = `Hello ${mentor.name}, I'm interested in learning about ${currentPath}. Can you guide me?`
       console.log('Sending greeting:', greeting)
 
       // Use setTimeout to ensure the component is fully mounted

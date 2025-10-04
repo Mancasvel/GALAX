@@ -8,6 +8,16 @@ import { MentorModal } from '@/components/MentorModal'
 import { MissionModal } from '@/components/MissionModal'
 import { Player } from '@/models/Player'
 
+// Path to Mentor mapping
+const PATH_TO_MENTOR: { [key: string]: string } = {
+  'Science & Research': 'Dr. Mae Jemison',
+  'Engineering & Systems': 'Bob Behnken',
+  'Medicine & Human Factors': 'Dr. Serena Auñón-Chancellor',
+  'Communications & Exploration': 'Chris Hadfield',
+  'Astronomy & Navigation': 'Jessica Watkins',
+  'Technology & Innovation': 'Victor Glover'
+}
+
 export default function BoardPage() {
   const [player, setPlayer] = useState<Player | null>(null)
   const [selectedPath, setSelectedPath] = useState<string | null>(null)
@@ -15,6 +25,11 @@ export default function BoardPage() {
   const [showMentorModal, setShowMentorModal] = useState(false)
   const [showMissionModal, setShowMissionModal] = useState(false)
   const [currentMission, setCurrentMission] = useState<string | null>(null)
+  
+  // Store conversation context for each path/mentor
+  const [conversationContexts, setConversationContexts] = useState<{
+    [key: string]: Array<{ role: string; content: string }>
+  }>({})
 
   // Initialize player or load existing progress
   useEffect(() => {
@@ -45,15 +60,51 @@ export default function BoardPage() {
   }, [])
 
   const handlePathSelect = (pathName: string) => {
+    console.log('Path selected:', pathName)
     setSelectedPath(pathName)
-    // Here you would typically load path-specific content
-    // For now, we'll just show the mentor modal
-    setShowMentorModal(true)
+    
+    // Get the mentor for this path
+    const mentorForPath = PATH_TO_MENTOR[pathName]
+    if (mentorForPath) {
+      setSelectedMentor(mentorForPath)
+      
+      // Update player's current path
+      if (player) {
+        setPlayer({
+          ...player,
+          currentPath: pathName as any,
+          mentor: mentorForPath
+        })
+      }
+      
+      // Open mentor modal
+      setShowMentorModal(true)
+    }
   }
 
   const handleMentorInteraction = (mentorName: string) => {
     setSelectedMentor(mentorName)
+    // Find the path for this mentor
+    const pathForMentor = Object.entries(PATH_TO_MENTOR).find(
+      ([_, mentor]) => mentor === mentorName
+    )?.[0]
+    if (pathForMentor) {
+      setSelectedPath(pathForMentor)
+    }
     setShowMentorModal(true)
+  }
+  
+  // Save conversation context when modal closes
+  const handleMentorModalClose = () => {
+    setShowMentorModal(false)
+  }
+  
+  // Update conversation context
+  const updateConversationContext = (pathName: string, messages: Array<{ role: string; content: string }>) => {
+    setConversationContexts(prev => ({
+      ...prev,
+      [pathName]: messages
+    }))
   }
 
   const handleMissionStart = (missionType: string) => {
@@ -140,9 +191,11 @@ export default function BoardPage() {
         {/* Modals */}
         <MentorModal
           isOpen={showMentorModal}
-          onClose={() => setShowMentorModal(false)}
+          onClose={handleMentorModalClose}
           mentorName={selectedMentor}
           currentPath={selectedPath}
+          conversationHistory={selectedPath ? conversationContexts[selectedPath] || [] : []}
+          onUpdateContext={updateConversationContext}
         />
 
         <MissionModal
