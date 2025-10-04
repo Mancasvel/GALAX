@@ -152,20 +152,32 @@ export default function BoardPage() {
     <main className="min-h-screen bg-black text-white overflow-hidden">
       <div className="relative">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute top-0 left-0 right-0 z-20 p-6"
-        >
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              NASA Space Dome
-            </h1>
-            <div className="text-sm text-gray-300">
-              Welcome, {player.name}
-            </div>
-          </div>
-        </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute top-0 left-0 right-0 z-20 p-6 bg-gradient-to-b from-black/80 to-transparent"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-1"
+                      style={{
+                        textShadow: "0 0 20px rgba(6, 182, 212, 0.5)",
+                        filter: "drop-shadow(0 0 10px rgba(59, 130, 246, 0.6))"
+                      }}>
+                    GALAX
+                  </h1>
+                  <p className="text-xs text-cyan-300 tracking-wider">Guided Astronaut Learning And eXploration</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-cyan-400 font-semibold">
+                    Trainee: {player.name}
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    🏆 {player.points} Points
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
         {/* Main Content */}
         <div className="flex h-screen pt-20">

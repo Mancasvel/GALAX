@@ -21,11 +21,16 @@ export function ProgressPanel({ player, onMentorClick, onMissionStart }: Progres
     >
       {/* Player Info */}
       <div className="mb-8">
-        <h2 className="text-xl font-bold text-white mb-4 tracking-wider" style={{
-          textShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
-        }}>
-          MISSION STATUS
-        </h2>
+        <div className="text-center mb-4 pb-4 border-b border-cyan-500/30">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-1"
+              style={{
+                textShadow: "0 0 20px rgba(6, 182, 212, 0.4)",
+                filter: "drop-shadow(0 0 10px rgba(59, 130, 246, 0.5))"
+              }}>
+            GALAX
+          </h2>
+          <p className="text-xs text-cyan-300 tracking-widest">MISSION STATUS</p>
+        </div>
         <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-4 border border-blue-500/30"
           style={{
             boxShadow: '0 0 20px rgba(59, 130, 246, 0.2), inset 0 0 20px rgba(59, 130, 246, 0.05)'

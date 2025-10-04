@@ -1,7 +1,7 @@
 {
-  "name": "nasa-space-dome-hackathon",
+  "name": "galax-astronaut-training",
   "version": "1.0.0",
-  "description": "Interactive educational game where students train to become astronauts through NASA Space Dome missions",
+  "description": "GALAX - Guided Astronaut Learning And eXploration - Interactive astronaut training platform powered by NASA",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
