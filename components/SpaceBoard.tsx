@@ -19,8 +19,9 @@ interface PathConfig {
 }
 
 export function SpaceBoard({ player, onPathSelect, onMentorClick }: SpaceBoardProps) {
-  const centerX = 400
-  const centerY = 300
+  // Responsive center coordinates - smaller on mobile
+  const centerX = typeof window !== 'undefined' && window.innerWidth < 640 ? 200 : 400
+  const centerY = typeof window !== 'undefined' && window.innerWidth < 640 ? 250 : 300
   
   const paths: PathConfig[] = [
     {
@@ -115,7 +116,7 @@ export function SpaceBoard({ player, onPathSelect, onMentorClick }: SpaceBoardPr
   }
 
   return (
-    <div className="relative w-full h-full bg-black overflow-hidden">
+    <div className="relative w-full h-full bg-black overflow-hidden touch-none">
       {/* Enhanced space background */}
       <div className="absolute inset-0">
         {/* Deep space gradient */}
@@ -159,7 +160,7 @@ export function SpaceBoard({ player, onPathSelect, onMentorClick }: SpaceBoardPr
       </div>
 
       {/* Cupola Structure */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 600">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
         <defs>
           {/* Dark metallic frame gradient */}
           <linearGradient id="darkMetal" x1="0%" y1="0%" x2="100%" y2="100%">

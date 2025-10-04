@@ -155,46 +155,66 @@ export default function BoardPage() {
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute top-0 left-0 right-0 z-20 p-6 bg-gradient-to-b from-black/80 to-transparent"
+              className="absolute top-0 left-0 right-0 z-20 p-3 sm:p-4 lg:p-6 bg-gradient-to-b from-black/80 to-transparent"
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-1"
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent mb-1"
                       style={{
                         textShadow: "0 0 20px rgba(6, 182, 212, 0.5)",
                         filter: "drop-shadow(0 0 10px rgba(59, 130, 246, 0.6))"
                       }}>
                     GALAX
                   </h1>
-                  <p className="text-xs text-cyan-300 tracking-wider">Guided Astronaut Learning And eXploration</p>
+                  <p className="text-[10px] sm:text-xs text-cyan-300 tracking-wider hidden sm:block">Guided Astronaut Learning And eXploration</p>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-cyan-400 font-semibold">
-                    Trainee: {player.name}
+                  <div className="text-xs sm:text-sm text-cyan-400 font-semibold">
+                    {player.name}
                   </div>
-                  <div className="text-xs text-gray-400">
-                    🏆 {player.points} Points
+                  <div className="text-[10px] sm:text-xs text-gray-400">
+                    🏆 {player.points} pts
                   </div>
                 </div>
               </div>
             </motion.div>
 
         {/* Main Content */}
-        <div className="flex h-screen pt-20">
-          {/* Progress Panel */}
-          <ProgressPanel
+        <div className="flex flex-col lg:flex-row h-screen pt-14 sm:pt-16 lg:pt-20">
+          {/* Progress Panel - Hidden on mobile, sidebar on desktop */}
+          <div className="hidden lg:block">
+            <ProgressPanel
             player={player}
             onMentorClick={handleMentorInteraction}
             onMissionStart={handleMissionStart}
           />
+          </div>
 
           {/* Space Board */}
-          <div className="flex-1 relative">
+          <div className="flex-1 relative overflow-hidden">
             <SpaceBoard
               player={player}
               onPathSelect={handlePathSelect}
               onMentorClick={handleMentorInteraction}
             />
+          </div>
+
+          {/* Mobile Bottom Stats Bar */}
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 via-gray-900/95 to-transparent backdrop-blur-md border-t border-cyan-500/30 p-3 z-30">
+            <div className="flex justify-around items-center text-center">
+              <div className="flex-1">
+                <div className="text-cyan-400 text-xs font-semibold">Path</div>
+                <div className="text-white text-sm truncate">{player.currentPath}</div>
+              </div>
+              <div className="flex-1 border-l border-r border-gray-700 px-2">
+                <div className="text-cyan-400 text-xs font-semibold">Points</div>
+                <div className="text-white text-sm">🏆 {player.points}</div>
+              </div>
+              <div className="flex-1">
+                <div className="text-cyan-400 text-xs font-semibold">Mentor</div>
+                <div className="text-white text-sm truncate">{player.mentor.split(' ')[0]}</div>
+              </div>
+            </div>
           </div>
         </div>
 

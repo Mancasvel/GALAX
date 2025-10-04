@@ -143,7 +143,7 @@ export function MentorModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={onClose}
         >
           <motion.div
@@ -151,42 +151,42 @@ export function MentorModal({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-gray-900 rounded-2xl border border-gray-700 max-w-2xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-gray-900 rounded-xl sm:rounded-2xl border border-gray-700 max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-cyan-900 via-blue-900 to-purple-900 p-6 border-b-2 border-cyan-500/30">
+            <div className="bg-gradient-to-r from-cyan-900 via-blue-900 to-purple-900 p-3 sm:p-4 lg:p-6 border-b-2 border-cyan-500/30 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl border-2 border-cyan-400/40"
+                <div className="flex items-center space-x-2 sm:space-x-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg lg:text-xl border-2 border-cyan-400/40"
                        style={{
                          boxShadow: '0 0 25px rgba(6, 182, 212, 0.5)'
                        }}>
                     {mentor.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">{mentor.name}</h2>
-                    <p className="text-cyan-300">{mentor.specialty}</p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                      <span className="text-green-400 text-sm">Online</span>
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{mentor.name}</h2>
+                    <p className="text-cyan-300 text-xs sm:text-sm">{mentor.specialty}</p>
+                    <div className="flex items-center space-x-1 sm:space-x-2 mt-1">
+                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-pulse" />
+                      <span className="text-green-400 text-xs sm:text-sm">Online</span>
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                  <div className="text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
                        style={{
                          textShadow: "0 0 15px rgba(6, 182, 212, 0.4)"
                        }}>
                     GALAX
                   </div>
-                  <div className="text-xs text-gray-400">AI Mentor System</div>
+                  <div className="text-[10px] sm:text-xs text-gray-400">AI Mentor</div>
                 </div>
               </div>
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 p-6 max-h-96 overflow-y-auto">
+            <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto">
               {conversationHistory.length > 0 && (
                 <div className="space-y-4 mb-6">
                   {conversationHistory.map((message, index) => (
@@ -271,15 +271,15 @@ export function MentorModal({
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-700 p-4">
+            <div className="border-t border-gray-700 p-2 sm:p-3 lg:p-4 flex-shrink-0">
               <div className="flex space-x-2">
                 <input
                   type="text"
                   value={userMessage}
                   onChange={(e) => setUserMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={`Ask ${mentor.name} a question about ${currentPath || 'space'}...`}
-                  className="flex-1 bg-gray-800 text-white rounded-lg px-4 py-2 border border-gray-600 focus:border-blue-400 focus:outline-none"
+                  placeholder={`Ask ${mentor.name.split(' ')[0]} about ${currentPath || 'space'}...`}
+                  className="flex-1 bg-gray-800 text-white rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-600 focus:border-blue-400 focus:outline-none"
                   disabled={isLoading}
                 />
                 <motion.button
@@ -287,7 +287,7 @@ export function MentorModal({
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleSendMessage()}
                   disabled={isLoading || !userMessage.trim()}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-600 text-white px-4 sm:px-6 py-2 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base"
                 >
                   Send
                 </motion.button>
