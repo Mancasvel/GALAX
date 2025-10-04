@@ -1,0 +1,320 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NASA Space Dome Theme Variables */
+:root {
+  --nasa-dark: #0a0a0a;
+  --nasa-gray: #1a1a1a;
+  --nasa-gray-light: #2d2d2d;
+  --nasa-blue: #3b82f6;
+  --nasa-blue-light: #60a5fa;
+  --nasa-blue-dark: #1e40af;
+  --nasa-purple: #8b5cf6;
+  --nasa-purple-light: #a78bfa;
+  --nasa-green: #10b981;
+  --nasa-green-light: #34d399;
+  --nasa-orange: #f59e0b;
+  --nasa-red: #ef4444;
+  --nasa-white: #ffffff;
+  --nasa-gray-text: #9ca3af;
+  --nasa-gray-text-light: #d1d5db;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: var(--nasa-dark);
+  color: var(--nasa-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center, var(--nasa-gray) 0%, var(--nasa-dark) 100%);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--nasa-white);
+}
+
+h1 {
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--nasa-blue), var(--nasa-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--nasa-white);
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--nasa-gray-text-light);
+}
+
+p {
+  color: var(--nasa-gray-text);
+  line-height: 1.7;
+}
+
+/* NASA-Inspired Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--nasa-blue), var(--nasa-purple));
+  color: var(--nasa-white);
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--nasa-blue-dark), var(--nasa-purple));
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--nasa-blue-light);
+  border: 2px solid var(--nasa-blue);
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-secondary:hover {
+  background: var(--nasa-blue);
+  color: var(--nasa-white);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+/* NASA Glow Effects */
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Space Dome Specific Styles */
+.dome-container {
+  background: radial-gradient(circle at center, var(--nasa-gray-light) 0%, var(--nasa-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.path-node {
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+.path-node:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 20px currentColor);
+}
+
+.path-node.unlocked {
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    filter: drop-shadow(0 0 10px currentColor);
+  }
+  to {
+    filter: drop-shadow(0 0 20px currentColor);
+  }
+}
+
+/* Progress Bars */
+.progress-bar {
+  background: var(--nasa-gray);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 0.5rem;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, var(--nasa-blue), var(--nasa-purple));
+  height: 100%;
+  border-radius: 0.5rem;
+  transition: width 0.5s ease;
+}
+
+/* Cards and Panels */
+.nasa-card {
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.nasa-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
+}
+
+/* Modal Styles */
+.nasa-modal {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.modal-content {
+  background: var(--nasa-gray);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Input Styles */
+.nasa-input {
+  background: var(--nasa-gray-light);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--nasa-white);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.nasa-input:focus {
+  outline: none;
+  border-color: var(--nasa-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.nasa-input::placeholder {
+  color: var(--nasa-gray-text);
+}
+
+/* Animations */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.star {
+  animation: star-twinkle 3s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * 1s);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .nasa-card {
+    padding: 1rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --nasa-blue: #4dabf7;
+    --nasa-purple: #9775fa;
+    --nasa-green: #51cf66;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .nasa-card,
+  .modal-content {
+    background: white !important;
+    border: 1px solid black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Utility Classes */
+.text-nasa-blue { color: var(--nasa-blue); }
+.text-nasa-purple { color: var(--nasa-purple); }
+.text-nasa-green { color: var(--nasa-green); }
+.text-nasa-orange { color: var(--nasa-orange); }
+.text-nasa-white { color: var(--nasa-white); }
+.text-nasa-gray { color: var(--nasa-gray-text); }
+
+.bg-nasa-dark { background-color: var(--nasa-dark); }
+.bg-nasa-gray { background-color: var(--nasa-gray); }
+.bg-nasa-blue { background-color: var(--nasa-blue); }
+.bg-nasa-purple { background-color: var(--nasa-purple); }
+
+.border-nasa-blue { border-color: var(--nasa-blue); }
+.border-nasa-purple { border-color: var(--nasa-purple); }
+.border-nasa-green { border-color: var(--nasa-green); } 

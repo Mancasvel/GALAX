@@ -1,0 +1,52 @@
+{
+  "name": "nasa-space-dome-hackathon",
+  "version": "1.0.0",
+  "description": "Interactive educational game where students train to become astronauts through NASA Space Dome missions",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed": "tsx lib/seed.ts",
+    "db:init": "tsx -r dotenv/config scripts/initDatabase.js",
+    "db:reset": "tsx -r dotenv/config scripts/initDatabase.js --reset",
+    "db:check": "tsx -r dotenv/config scripts/initDatabase.js --check",
+    "db:migrate-users": "node scripts/migrateUsers.js"
+  },
+  "dependencies": {
+    "@heroui/react": "^2.7.10",
+    "@revenuecat/purchases-js": "^1.9.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/dotenv": "^6.1.1",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.2",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^17.0.1",
+    "framer-motion": "^11.11.17",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.19.0",
+    "next": "^15.3.5",
+    "next-pwa": "^5.6.0",
+    "nodemailer": "^6.9.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-onesignal": "^3.0.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^20.10.5",
+    "@types/nodemailer": "^6.4.14",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/uuid": "^9.0.7",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
+  }
+}

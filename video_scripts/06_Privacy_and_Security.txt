@@ -1,0 +1,19 @@
+
+Video 6 – “Why It’s Encrypted”
+
+Hook:
+If your most personal thoughts live in an app, it better treat them like sacred ground.
+
+Body:
+In Unsent, everything you write is encrypted. Not for compliance — for dignity.
+
+I’m using MongoDB Atlas with full end-to-end encryption. Even if someone got access, all they’d find is silence and static.
+
+Because these aren’t just messages. They’re memories. Ghosts. Regrets. Confessions. Some people write to the dead. Others to lovers they’ll never see again.
+
+And I won’t let anyone — not even me — see what they wrote.
+
+Final punch:
+The app forgets. So you can remember safely.
+
+That’s privacy as reverence.

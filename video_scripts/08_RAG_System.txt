@@ -1,0 +1,17 @@
+
+Video 8 – “An AI That Remembers”
+
+Hook:
+A conversation is pointless if the other person has amnesia.
+
+Body:
+I knew the AI in Unsent had to feel real. That meant it needed a memory. I’m using a Retrieval-Augmented Generation system, or RAG.
+
+It’s a fancy way of saying the AI learns from your history. It remembers the context of your relationship, the things you’ve said before, the emotional arc of your journey.
+
+So the conversation evolves. It gets deeper, more authentic. It’s not just spitting out generic responses. It’s building a relationship with your memory of a person.
+
+Final punch:
+This isn't just artificial intelligence. It's artificial intimacy.
+
+And sometimes, that's enough to start healing.
