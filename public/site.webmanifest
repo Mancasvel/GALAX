@@ -1,14 +1,14 @@
 {
-  "name": "Unsent - Mensajes que nunca se enviaron",
-  "short_name": "Unsent",
-  "description": "Un espacio seguro para escribir lo que nunca pudiste decir. Procesa tus emociones y encuentra la paz.",
+  "name": "GALAX - Guided Astronaut Learning And eXploration",
+  "short_name": "GALAX",
+  "description": "Train to become an astronaut through interactive missions guided by real NASA astronauts. Your journey to the stars begins here.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#0f0f0f",
+  "theme_color": "#06B6D4",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "es",
+  "lang": "en",
   "dir": "ltr",
   "icons": [
     {
@@ -37,7 +37,7 @@
       "type": "image/png"
     }
   ],
-  "categories": ["lifestyle", "health", "productivity", "social"],
+  "categories": ["education", "games", "science", "learning"],
   "screenshots": [
     {
       "src": "/screenshots/home.png",
@@ -45,46 +45,46 @@
       "type": "image/png"
     },
     {
-      "src": "/screenshots/chat.png",
+      "src": "/screenshots/board.png",
       "sizes": "1080x1920",
       "type": "image/png"
     }
   ],
   "shortcuts": [
     {
-      "name": "Nueva Conversación",
-      "short_name": "Nueva",
-      "description": "Comenzar una nueva conversación",
-      "url": "/new-conversation",
+      "name": "Training Board",
+      "short_name": "Train",
+      "description": "Start astronaut training",
+      "url": "/board",
       "icons": [
         {
-          "src": "/icons/new-conversation.png",
+          "src": "/icons/board.png",
           "sizes": "96x96",
           "type": "image/png"
         }
       ]
     },
     {
-      "name": "Conversaciones",
-      "short_name": "Conversaciones",
-      "description": "Ver todas las conversaciones",
-      "url": "/conversations",
+      "name": "Settings",
+      "short_name": "Settings",
+      "description": "Customize your astronaut profile",
+      "url": "/settings",
       "icons": [
         {
-          "src": "/icons/conversations.png",
+          "src": "/icons/settings.png",
           "sizes": "96x96",
           "type": "image/png"
         }
       ]
     },
     {
-      "name": "Ecos",
-      "short_name": "Ecos",
-      "description": "Ver fragmentos misteriosos",
-      "url": "/echoes",
+      "name": "Login",
+      "short_name": "Login",
+      "description": "Access your training account",
+      "url": "/auth/login",
       "icons": [
         {
-          "src": "/icons/echoes.png",
+          "src": "/icons/login.png",
           "sizes": "96x96",
           "type": "image/png"
         }
